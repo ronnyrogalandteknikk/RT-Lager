@@ -1,0 +1,55 @@
+Sub Main()
+    
+    
+    Call OpenCSV
+    
+'    Dim MyBook As String
+    Dim DynamicRange As Range
+    Dim PAL As Worksheet
+'    Dim P2P As String
+'    Dim MP As String
+'    Dim NotPlaced As String
+'    Dim Partn As String
+'    Dim Projectn As String
+'    Dim Qty As Integer
+'    Dim Prevn As Integer
+    Dim LastRow As Long
+    Dim i As Integer
+    
+'    P2P = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test P2P.csv"
+'    MP = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test MP.xlsx"
+'    NotPlaced = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test NotPlaced.xlsx"
+    
+'-------------CODE-------------------
+    
+    Set PAL = ActiveSheet
+    PAL.Cells(1, 1).Select
+    
+    LastRow = PAL.Range("A1").CurrentRegion.Rows.Count
+      
+    For i = 2 To LastRow
+   
+        ' Finds out which operation to start
+        ' -0 removes items from storage and adds in projects
+        ' -1 Adds items to storage and removes from projects
+        ' -2 Raplaces amounts in storage
+        ' If neither, move row to another file
+    
+        If Right(ActiveCell.Value, 2) = "-0" Then
+ '      OpenProject
+            MsgBox "0"
+        ElseIf Right(ActiveCell.Value, 2) = "-1" Then
+            MsgBox "1"
+        ElseIf Right(ActiveCell.Value, 2) = "-2" Then
+            MsgBox "2"
+        Else
+            MsgBox "Error"
+
+        End If
+        
+        
+        
+    Next i
+    
+End Sub
+
