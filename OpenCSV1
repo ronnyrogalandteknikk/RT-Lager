@@ -1,0 +1,27 @@
+Sub OpenCSV()
+    Dim FilePath As String
+    
+    FilePath = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test Pal.ORD.csv"
+    
+    Open FilePath For Input As #1
+    
+    row_number = 0
+    
+    Do Until EOF(1)
+        Line Input #1, LineFromFile
+        
+        LineItems = Split(LineFromFile, ",")
+        
+        ActiveCell.Offset(row_number, 0).Value = LineItems(0)
+        ActiveCell.Offset(row_number, 1).Value = LineItems(1)
+        ActiveCell.Offset(row_number, 2).Value = LineItems(2)
+        ActiveCell.Offset(row_number, 3).Value = LineItems(3)
+        ActiveCell.Offset(row_number, 4).Value = LineItems(4)
+        
+        row_number = row_number + 1
+    Loop
+    ActiveSheet.UsedRange.Replace what:=Chr(34), Replacement:=""
+    ActiveSheet.UsedRange.Replace what:=Chr(59), Replacement:=""
+    Close #1
+    
+End Sub
