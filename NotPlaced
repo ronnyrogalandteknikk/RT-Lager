@@ -1,0 +1,27 @@
+Option Explicit
+
+
+Sub NotPlacedmod()
+    Dim NotPlacedxl As String
+    Dim NotPlaced As Worksheet
+    Dim LastRow2 As String
+    
+    
+    NotPlacedxl = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test NotPlaced.xlsx"
+    
+   ActiveCell.EntireRow.Select
+        Selection.Copy
+    
+    Workbooks.Open NotPlacedxl
+        Set NotPlaced = ActiveSheet
+        NotPlaced.Cells(1, 1).Select
+        
+        LastRow2 = Range("A" & Rows.Count).End(xlUp).Offset(1).Row
+        
+            ActiveCell.Select
+           ActiveSheet.Cells(LastRow2, 1).Select
+            ActiveSheet.Paste
+            ActiveWorkbook.Save
+            ActiveWorkbook.Close
+           Application.CutCopyMode = False
+End Sub
