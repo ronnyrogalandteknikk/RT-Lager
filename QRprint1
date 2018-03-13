@@ -1,0 +1,45 @@
+Option Explicit
+
+Const sPath = "C:\Program Files (x86)\Brother bPAC3 SDK\Templates\QR Code Template.lbx"
+
+Sub QRprint()
+        Dim bRet As Boolean
+    Dim ObjDoc As bpac.Document
+    Dim r As Integer
+    Dim iRow As Integer
+    Set ObjDoc = CreateObject("bpac.Document")
+    iRow = Selection.Cells(r, 1).Row
+    Dim iTotal As Integer
+    Dim Str As String
+    
+    'Open lbx file
+    bRet = ObjDoc.Open(sPath)
+    If (bRet <> False) Then
+        
+        ' Determine how many rows the user selected
+        iTotal = ActiveCell.Offset(0, 3).Text
+
+        ' Start Print
+        ObjDoc.StartPrint "", bpoDefault
+        For r = 1 To iTotal
+          
+            'Data Text (Text)
+            Str = ActiveCell.Offset(0, 2).Text
+            ObjDoc.GetObject("txt1").Text = Str
+            
+            'Data Text(QR-code)
+            ObjDoc.GetObject("QR1").Text = Str
+            
+            ' Print
+            ObjDoc.PrintOut 1, bpoDefault
+        Next
+        
+        ' End Print
+        ObjDoc.EndPrint
+              
+        ' Close object
+        ObjDoc.Close
+    End If
+   
+End Sub
+
