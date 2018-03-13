@@ -1,34 +1,29 @@
+Option Explicit
+
 Sub Main()
+    Application.ScreenUpdating = False
     
+'    Call OpenCSV
     
-    Call OpenCSV
-    
-'    Dim MyBook As String
+    Dim newBook As Range
     Dim DynamicRange As Range
-    Dim PAL As Worksheet
-'    Dim P2P As String
-'    Dim MP As String
-'    Dim NotPlaced As String
-'    Dim Partn As String
-'    Dim Projectn As String
-'    Dim Qty As Integer
-'    Dim Prevn As Integer
-    Dim LastRow As Long
+    Dim PalIns As Worksheet
+    Dim Pal As String
+    Dim NotPlaced As String
+    Dim LastRow As String
     Dim i As Integer
     
-'    P2P = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test P2P.csv"
-'    MP = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test MP.xlsx"
-'    NotPlaced = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test NotPlaced.xlsx"
-    
+    NotPlaced = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test NotPlaced.xlsx"
+    Pal = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Test PAL.ORD.csv"
 '-------------CODE-------------------
     
-    Set PAL = ActiveSheet
-    PAL.Cells(1, 1).Select
+    Set PalIns = ActiveSheet
+    PalIns.Cells(1, 1).Select
     
-    LastRow = PAL.Range("A1").CurrentRegion.Rows.Count
-      
-    For i = 2 To LastRow
-   
+    LastRow = Range("A" & Rows.Count).End(xlUp).Offset(0).Row
+    
+    For i = 1 To LastRow
+    Range("A" & i).Select
         ' Finds out which operation to start
         ' -0 removes items from storage and adds in projects
         ' -1 Adds items to storage and removes from projects
@@ -36,20 +31,43 @@ Sub Main()
         ' If neither, move row to another file
     
         If Right(ActiveCell.Value, 2) = "-0" Then
- '      OpenProject
-            MsgBox "0"
+'            MsgBox "0"
+'            Call StorageOut
         ElseIf Right(ActiveCell.Value, 2) = "-1" Then
-            MsgBox "1"
+'            MsgBox "1"
+'            Call StorageIn
         ElseIf Right(ActiveCell.Value, 2) = "-2" Then
-            MsgBox "2"
+'            MsgBox "2"
+'            Call Counting
+        ElseIf Right(ActiveCell.Value, 2) = "-9" Then
+'           MsgBox "9"
+'           Call QRprint
         Else
-            MsgBox "Error"
-
+'            MsgBox "Error"
+'            Call NotPlacedmod
+            
+            Set PalIns = ActiveSheet
+        
         End If
         
-        
-        
     Next i
+
+'Open Pal
+'    Workbooks.Open Pal
+'    Set Pal = ActiveSheet
+'    Pal.Cells(1, 1).Select
+'    Sheet1.Cells.Clear
+'    ActiveWorkbook.Save
+'    ActiveWorkbook.Close
+'    Application.CutCopyMode = False
+
+'Set PalIns = ActiveSheet
+
+'Sheet1.Cells.Clear
+
+
+
+Application.ScreenUpdating = True
     
 End Sub
 
