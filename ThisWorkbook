@@ -1,5 +1,6 @@
 Private Sub Workbook_Open()
 
-OpenCSV
+'Call OpenCSV
+'Call Main
 
 End Sub
