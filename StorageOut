@@ -1,0 +1,105 @@
+Option Explicit
+
+Sub StorageOut()
+    Dim sProject As String
+    Dim sLocation As String
+    Dim sPN As String
+    Dim lQty As Long
+    Dim sDescription As String
+    Dim sLev As String
+    Dim dEnhetspris As Double
+    Dim iRab As Integer
+    Dim MPxl As String
+    Dim Palxl As String
+    Dim P2Pxl As String
+    Dim P2P As Worksheet
+    Dim MP As Worksheet
+    Dim Pal As Worksheet
+    Dim LastRow As String
+    Dim LastRow2 As String
+    Dim i As Integer
+    Dim Y As Integer
+    
+    
+    P2Pxl = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test P2P.csv"
+    MPxl = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test MP.xlsx"
+    
+'---------------CODE-------------
+
+    'Defines variables of the entry
+    sProject = ActiveCell.Value
+    sLocation = ActiveCell.Offset(0, 1)
+    sPN = ActiveCell.Offset(0, 2)
+    lQty = ActiveCell.Offset(0, 3)
+    
+    'Checks if the location has a correct format, if not,
+    'the row is skipped and moved to the NotFound-file
+    If Mid(ActiveCell.Offset(0, 1).Value, 3, 1) <> "." Then
+'            Call NotPlacedmod
+            MsgBox "No"
+            Exit Sub
+        End If
+    
+    
+    'Open MasterParts
+    Workbooks.Open MPxl
+    Set MP = ActiveSheet
+    MP.Cells(1, 1).Select
+    
+    'Find last Row
+    LastRow = Range("B" & Rows.Count).End(xlUp).Offset(0).Row
+    
+    'Goes through every row to find corresponding data
+    For i = 1 To LastRow
+        Range("B" & i).Select
+        
+        If ActiveCell = sLocation And ActiveCell.Offset(0, 1) = sPN Then
+                ActiveCell.Offset(0, 3) = ActiveCell.Offset(0, 3).Value - lQty
+                    If ActiveCell.Offset(0, 3).Value < 0 Then
+                        ActiveCell.Offset(0, 3).Value = 0
+                    End If
+        Else
+        ActiveSheet.Cells(LastRow, 1).Select
+        ActiveCell.Offset(0, 1) = sLocation
+        ActiveCell.Offset(0, 2) = sPN
+        ActiveCell.Offset(0, 3) = "Needs Description"
+        ActiveCell.Offset(0, 4) = lQty
+        
+        LastRow = LastRow + 1
+        End If
+        
+        sDescription = ActiveCell.Offset(0, 3).Value
+        sLev = ActiveCell.Offset(0, 8).Value
+        dEnhetspris = ActiveCell.Offset(0, 9).Value
+        iRab = ActiveCell.Offset(0, 10).Value
+        
+    Next i
+    
+    'Saves and closes the MasterParts file
+    ActiveWorkbook.Save
+    ActiveWorkbook.Close
+    Application.CutCopyMode = False
+    
+    'Open P2P
+    Workbooks.Open P2Pxl
+    Set P2P = ActiveSheet
+    P2P.Cells(1, 1).Select
+    
+    'Find Last Row
+    LastRow2 = Range("A" & Rows.Count).End(xlUp).Offset(0).Row
+    
+    'Goes through every row to find corresponding data
+    For Y = 1 To LastRow2
+        Range("A" & i).Select
+        
+        If ActiveCell = sProject And ActiveCell.Offset(0, 2) = sPN Then
+            ActiveCell.Offset(0, 4) = ActiveCell.Offset(0, 4).Value - lQty
+                If ActiveCell.Offset(0, 4) >= 0 Then
+                    ActiveCell.EntireRow.Delete
+                End If
+        Else
+            
+        End If
+    
+End Sub
+
