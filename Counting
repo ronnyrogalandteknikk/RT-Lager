@@ -1,0 +1,67 @@
+Option Explicit
+
+Sub Counting()
+    Dim sLocation As String
+    Dim sPN As String
+    Dim lQty As Long
+    Dim lPrevQty As Long
+    Dim MPxl As String
+    Dim Palxl As String
+    Dim MP As Worksheet
+    Dim Pal As Worksheet
+    Dim LastRow As String
+    Dim LastLoc As String
+    Dim i As Integer
+    Dim bFound As Boolean
+        
+    MPxl = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test MP.xlsx"
+    
+'----------CODE------------------------
+    
+    'Defines variables of the entry
+    sLocation = ActiveCell.Offset(0, 1)
+    sPN = ActiveCell.Offset(0, 2)
+    lQty = ActiveCell.Offset(0, 3)
+    
+    'Checks if the location has a correct format, if not, the row is skipped and moved to the NotFound-file
+    If Mid(ActiveCell.Offset(0, 1).Value, 3, 1) <> "." Then
+'            Call NotPlacedmod
+            MsgBox "No"
+            Exit Sub
+        End If
+        
+    'Open MasterParts
+    Workbooks.Open MPxl
+    Set MP = ActiveSheet
+    MP.Cells(1, 1).Select
+    
+    'Find last Row
+    LastRow = Range("B" & Rows.Count).End(xlUp).Offset(1).Row
+    bFound = False
+    
+    'Goes through every row to find corresponding data
+    For i = 1 To LastRow
+        Range("B" & i).Select
+        
+        If ActiveCell = sLocation And ActiveCell.Offset(0, 1) = sPN Then
+            lPrevQty = ActiveCell.Offset(0, 3)
+            ActiveCell.Offset(0, 5) = lPrevQty
+            ActiveCell.Offset(0, 3) = lQty
+            bFound = True
+        End If
+    Next i
+    
+    If bFound = False Then
+        ActiveSheet.Cells(LastRow, 1).Select
+        ActiveCell.Offset(0, 1) = sLocation
+        ActiveCell.Offset(0, 2) = sPN
+        ActiveCell.Offset(0, 3) = "New Entry"
+        ActiveCell.Offset(0, 4) = lQty
+    End If
+    
+    'Saves and closes the MasterParts file
+    ActiveWorkbook.Save
+    ActiveWorkbook.Close
+    Application.CutCopyMode = False
+       
+End Sub
