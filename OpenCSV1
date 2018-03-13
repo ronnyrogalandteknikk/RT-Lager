@@ -1,12 +1,14 @@
+Option Explicit
+
 Sub OpenCSV()
     Dim FilePath As String
-    
+    Sheet1.Cells.Clear
     FilePath = "D:\RT\Dropbox (Team RT)\Rogaland Teknikk (1)\RT-2018.1318 - RT Lager\Documentation\Programming Excel test\Test\Test Pal.ORD.csv"
     
     Open FilePath For Input As #1
     
     row_number = 0
-    
+    ActiveSheet.Cells(1, 1).Select
     Do Until EOF(1)
         Line Input #1, LineFromFile
         
